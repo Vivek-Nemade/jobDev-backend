@@ -30,7 +30,12 @@ export const setTokenCookies = (res, accessToken, refreshToken) => {
   });
 };
 
+const clearOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+  };
 export const clearTokenCookies = (res) => {
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken",clearOptions);
+  res.clearCookie("refreshToken",clearOptions);
 };
