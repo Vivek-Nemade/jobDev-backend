@@ -14,6 +14,7 @@ const createCloudinaryStorage = (opts) => ({
 
     if(opts.resource_type==="raw"){
       const extenstion= file.originalname.split(".").pop();
+      // uploadOpts.public_id=`${Date.now()}.${extenstion}`
       uploadOpts.public_id=`${Date.now()}.${extenstion}`
     }
     const uploadStream = cloudinary.uploader.upload_stream(
