@@ -32,7 +32,7 @@ router.get("/me", protect, getMe);
 // Google OAuth
 router.get("/google",(req,res,next)=>{
   // const role = req.query.role === "recruiter" ? "recruiter" : "jobseeker";
-  const role = req.query.state || "jobseeker";
+  const role = req.query.role || "jobseeker";
   passport.authenticate("google", 
     { scope: ["profile", "email"],
       state: role,
