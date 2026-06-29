@@ -54,10 +54,13 @@ router.get(
     }
 
     try {
-      const accessToken = generateAccessToken(req.user._id);
-      const refreshToken = generateRefreshToken(req.user._id);
+      // const accessToken = generateAccessToken(req.user._id);
+      const accessToken = generateAccessToken(user._id);
+      // const refreshToken = generateRefreshToken(req.user._id);
+      const refreshToken = generateRefreshToken(user._id);
 
-      req.user.refreshToken = refreshToken;
+      // req.user.refreshToken = refreshToken;
+      user.refreshToken = refreshToken;
       await req.user.save();
 
       setTokenCookies(res, accessToken, refreshToken);
