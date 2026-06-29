@@ -61,7 +61,7 @@ router.get(
 
       // req.user.refreshToken = refreshToken;
       user.refreshToken = refreshToken;
-      await req.user.save();
+      await user.save();
 
       setTokenCookies(res, accessToken, refreshToken);
       return res.redirect(`${process.env.CLIENT_URL}/auth/callback`);
