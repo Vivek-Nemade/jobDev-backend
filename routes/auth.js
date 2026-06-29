@@ -39,7 +39,8 @@ router.get("/google",(req,res,next)=>{
 });
 
 router.get(
-  "/google/callback",
+  "/google/callback",(req,res,next) => {
+  
   // passport.authenticate("google", { failureRedirect: "/login", session: false }),
   passport.authenticate("google", {  session: false },async (err,user,info) => {
 
@@ -67,7 +68,7 @@ router.get(
     
     
   })(req,res,next)
-);
+});
 
 // router.get("/google/callback",(req,res,next)=>{
 
