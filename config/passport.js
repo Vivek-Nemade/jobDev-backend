@@ -19,11 +19,11 @@ passport.use(
         const role = req.query.state === "recruiter" ? "recruiter" : "jobseeker";
         if (user) {
 
-          // if(user.role!==role){
-          //   return done(null,false,{
-          //     message:`This email is registered as a ${user.role}. Please use the ${user.role} login button.`
-          //   });
-          // }
+          if(user.role!==role){
+            return done(null,false,{
+              message:`This email is registered as a ${user.role}. Please use the ${user.role} login button.`
+            });
+          }
 
           // Existing user — update oauth info if needed
           if (!user.oauthProvider) {

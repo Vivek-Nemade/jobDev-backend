@@ -40,17 +40,33 @@ router.get("/google",(req,res,next)=>{
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login", session: false }),
-  async (req, res) => {
-    const accessToken = generateAccessToken(req.user._id);
-    const refreshToken = generateRefreshToken(req.user._id);
+  // passport.authenticate("google", { failureRedirect: "/login", session: false }),
+  passport.authenticate("google", {  session: false },async (err,user,info) => {
 
-    req.user.refreshToken = refreshToken;
-    await req.user.save();
+    if(err){
+      return res.redirect(`${process.env.CLIENT_URL}/login?error=${encodeURIComponent("Something went wrong")}`);
+    }
+    if(!user){
+      const msg= info?.message || "Authentication failed";
+      return res.redirect(`${process.env.CLIENT_URL}/login?error=${encodeURIComponent(msg)}`);
+    }
 
-    setTokenCookies(res, accessToken, refreshToken);
-    res.redirect(`${process.env.CLIENT_URL}/auth/callback`);
-  }
+    try {
+      const accessToken = generateAccessToken(req.user._id);
+      const refreshToken = generateRefreshToken(req.user._id);
+
+      req.user.refreshToken = refreshToken;
+      await req.user.save();
+
+      setTokenCookies(res, accessToken, refreshToken);
+      return res.redirect(`${process.env.CLIENT_URL}/auth/callback`);
+    } catch (error) {
+      console.log(error);
+      return res.redirect(`${process.env.CLIENT_URL}/login?error=${encodeURIComponent("Login failed")}`);
+    }
+    
+    
+  })(req,res,next)
 );
 
 // router.get("/google/callback",(req,res,next)=>{
