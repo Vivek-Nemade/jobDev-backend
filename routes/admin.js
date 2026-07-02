@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  // getStats,
   getPendingJobs,
   updateJobStatus,
   getAllUsers,
@@ -11,7 +10,7 @@ import { protect, restrictedFor } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(protect, restrictedFor("admin")); // All admin routes require admin role
+router.use(protect, restrictedFor("admin"));
 
 router.get("/stats", getStats);
 router.get("/jobs/pending", getPendingJobs);
