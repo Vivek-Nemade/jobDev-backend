@@ -56,7 +56,19 @@ export const getJob = asyncHandler(async (req, res) => {
     "name photo company companyWebsite bio"
   );
   if (!job) return res.status(404).json({ message: "Job not found" });
-  res.json(job);
+
+  const jobObj=job.toObject();
+  if(req?.user) {
+    // const saved = await SavedJob.findOne({ job: req.params.id, user: req.user._id });
+    const isSaved = await SavedJob.exists({ job: req.params.id, user: req.user._id });
+    jobObj.isSaved=!!isSaved;
+  }else{
+    jobObj.isSaved=false;
+  }
+  console.log(jobObj);
+
+
+  res.json(jobObj);
 });
 
 // POST /api/v1/jobs — recruiter only

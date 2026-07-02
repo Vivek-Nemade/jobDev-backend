@@ -26,6 +26,29 @@ export const protect = async (req, res, next) => {
     }
 };
 
+// only to check if user is logged in on job details for isSaved
+export const checkAuth =async (req, res, next) => {
+    const token = req.cookies.accessToken;
+
+    if(!token) {
+       return next();
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = await User.findById(decoded.id).select('-passwordHash -otp -otpExpiry -refreshToken');
+        next();
+    } catch (error) {
+        console.log("Optional JWT verification failed (treating as guest):", error.message);
+        next();
+    }
+}
+
+
+
+
+
+
 //Role Based Access Control
 
 export const restrictedFor = (...roles) => {

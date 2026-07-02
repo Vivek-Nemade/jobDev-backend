@@ -7,13 +7,13 @@ import {
   deleteJob,
   getMyJobs,
 } from "../controllers/jobController.js";
-import { protect, restrictedFor, requireVerified } from "../middleware/auth.js";
+import { protect, restrictedFor, requireVerified, checkAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
 // Public
 router.get("/", getJobs);
-router.get("/:id", getJob);
+router.get("/:id", checkAuth, getJob);
 
 // Recruiter only
 router.get("/recruiter/my", protect, restrictedFor("recruiter"), getMyJobs);
